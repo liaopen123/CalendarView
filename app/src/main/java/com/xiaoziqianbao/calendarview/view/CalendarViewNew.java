@@ -7,6 +7,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 
 import com.xiaoziqianbao.calendarview.adapter.RvAdapter;
+import com.xiaoziqianbao.calendarview.bean.MonthBean;
 
 /**
  * Created by liaopenghui on 2017/4/14.
@@ -35,8 +36,8 @@ public class CalendarViewNew extends RecyclerView {
         mLayoutManager = new StaggeredGridLayoutManager(7, StaggeredGridLayoutManager.VERTICAL);
         setLayoutManager(mLayoutManager);
     }
-    public void setData(Context context,int year,int month){
-        RvAdapter rvAdapter = new RvAdapter(context, year, month);
+    public void setData(Context context, int year, int month, MonthBean monthBean){
+        RvAdapter rvAdapter = new RvAdapter(context, year, month,monthBean);
         setAdapter(rvAdapter);
         rvAdapter.setOnItemClickListener(new RvAdapter.ItemOnclickListener() {
             @Override
@@ -49,6 +50,7 @@ public class CalendarViewNew extends RecyclerView {
 
         });
 //        rvAdapter.notify();
+
     }
 
     public void setOnclickListener(OnItemClickListener onclickListener){

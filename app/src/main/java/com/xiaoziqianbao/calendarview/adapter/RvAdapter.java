@@ -1,6 +1,7 @@
 package com.xiaoziqianbao.calendarview.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xiaoziqianbao.calendarview.R;
+import com.xiaoziqianbao.calendarview.bean.MonthBean;
 import com.xiaoziqianbao.calendarview.utils.DateUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,43 +24,28 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
     private final List<Integer> dayOfMonth;
     private final int year;
     private final int month;
-    private ArrayList<String> lists = null;
+    private final MonthBean monthBean;
+    private final int currentDayOfMonth;//今天几号
 
-    private boolean start=false;
 
 
     private ItemOnclickListener itemClickListener;
 
-//    public RvAdapter(Context context, ArrayList<String> lists) {
-//        this.context= context;
-//        this.lists = lists;
-//    }
-//    public RvAdapter(Context context) {
-//        this.context= context;
-//
-//    }
-
-//    public RvAdapter(CalendarActivity context, int[][] dayOfMonthFormat) {
-//        this.context= context;
-//        this.dayOfMonthFormat = dayOfMonthFormat;
-//    }
-
-//    public RvAdapter(CalendarActivity context, List<Integer> dayOfMonth) {
-//        this.context= context;
-//        this.dayOfMonth = dayOfMonth;
-//    }
 
     /**
-     *
-     * @param context context
+     *  @param context context
      * @param year  年
      * @param month 月
+     * @param monthBean
      */
-    public RvAdapter(Context context, int year, int month) {
+    public RvAdapter(Context context, int year, int month, MonthBean monthBean) {
         this.year = year;
         this.month = month;
         this.context= context;
+        this.monthBean = monthBean;
+        //根据传入的年份和月份，获取当前月份的日历分布
       dayOfMonth = DateUtils.getDayOfMonth(year, month);
+        currentDayOfMonth = DateUtils.getCurrentDayOfMonth();
     }
 
     public void setOnItemClickListener(ItemOnclickListener itemClickListener){
@@ -80,7 +66,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        if(holder instanceof MyViewHolder) {
+
 
 
 
@@ -92,18 +78,20 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
             }else if(position>i1){
 
             }else{
-                holder.tv_name.setText(dayOfMonth.get(position)+"");
+
+                Integer integer = dayOfMonth.get(position);
+             String content =   monthBean.getDates().contains(integer)? integer+"H":integer+"";
+
+                holder.tv_name.setText(content);
+               if(isSameDay(year,month,integer)){
+                   //是今天
+                   holder.tv_name.setTextColor(Color.RED);
+               }else {
+                   holder.tv_name.setTextColor(Color.BLACK);
+               }
             }
-//            dayOfMonth
-//            ((MyViewHolder)holder).tv_name.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    if (null != itemClickListener) {
-//                        itemClickListener.setonTextViewClickListener(view, position);
-//                    }
-//                }
-//            });
-        }
+
+
     }
     /*总天数：1号在第周几+1+总天数*/
     @Override
@@ -138,5 +126,10 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
     }
 
 
-
+        public boolean isSameDay(int year,int month,int day){
+            if(year==DateUtils.getYear()&&month==DateUtils.getMonth()&&day==DateUtils.getCurrentDayOfMonth()){
+                return true;
+            }
+            return false;
+        }
 }

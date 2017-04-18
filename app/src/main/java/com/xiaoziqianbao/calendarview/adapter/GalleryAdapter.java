@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.xiaoziqianbao.calendarview.CalendarActivity;
 import com.xiaoziqianbao.calendarview.R;
 
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ public class GalleryAdapter extends RecyclerView.Adapter {
 //
 //    }
 
-    public GalleryAdapter(CalendarActivity context, String[] mDateTitles) {
+    public GalleryAdapter(Context context, String[] mDateTitles) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
              this.mDateTitles = mDateTitles;
@@ -66,10 +65,8 @@ public class GalleryAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-     int color =  position%2==0? Color.RED :Color.BLUE;
         ViewHolder1 viewHolder1 = (ViewHolder1) holder;
-        viewHolder1.linearLayout.setBackgroundColor(color);
-        viewHolder1.mImg.setText(mDateTitles[position]);
+        viewHolder1.mImg.setText(mDateTitles[position]+"月");
         viewHolder1.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

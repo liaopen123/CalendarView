@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="120dp"
     android:id="@+id/ll"
-    android:layout_height="match_parent">
+    android:layout_height="40dp">
 <TextView
     android:src="@mipmap/ic_launcher"
     android:layout_width="20dp"

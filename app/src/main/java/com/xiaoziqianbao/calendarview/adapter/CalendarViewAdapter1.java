@@ -9,7 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.xiaoziqianbao.calendarview.bean.MonthBean;
 import com.xiaoziqianbao.calendarview.view.CalendarViewNew;
+
+import java.util.ArrayList;
 
 public class CalendarViewAdapter1<V extends View> extends PagerAdapter {
 	private final int year;
@@ -20,14 +23,22 @@ public class CalendarViewAdapter1<V extends View> extends PagerAdapter {
 	private int mMonthCount;
 	private String TAG ="CalendarViewAdapter1";
 	private int mPosition;
+	private ArrayList<MonthBean> monthList = new ArrayList<>();
 
-	public CalendarViewAdapter1(Context context,int year,int month) {
+	/**
+	 *
+	 * @param context 上下文
+	 * @param year  起始年
+	 * @param month   起始的第一个月
+	 * @param monthList   每个月的数据集合
+	 */
+	public CalendarViewAdapter1(Context context,int year,int month,ArrayList<MonthBean> monthList) {
 		mContext = context;
 		mViews = new SparseArray<>();
-		mMonthCount = 15;
+		mMonthCount = monthList.size();
 		this.year = year;
 		this.month = month;
-		int monthCount = 0;
+		this.monthList =monthList;
 	}
 
 	@Override
@@ -37,14 +48,17 @@ public class CalendarViewAdapter1<V extends View> extends PagerAdapter {
 
 	@Override
 	public Object instantiateItem(ViewGroup container, int position) {
+
+		Log.e(TAG,"初始化时候的position"+position);
 		if (mViews.get(position) == null) {
 			int date[] = getYearAndMonth(position);
+			MonthBean monthBean = monthList.get(position);
 			CalendarViewNew monthView = new CalendarViewNew(mContext);
 			monthView.setId(position);
 			monthView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 			monthView.invalidate();
 //			monthView.setOnDateClickListener(mMonthCalendarView);
-			monthView.setData(mContext,date[0],date[1]);
+			monthView.setData(mContext,date[0],date[1],monthBean);
 			mViews.put(position, monthView);
 			monthView.setOnclickListener(new CalendarViewNew.OnItemClickListener() {
 				@Override
@@ -91,5 +105,11 @@ public class CalendarViewAdapter1<V extends View> extends PagerAdapter {
 
 	public int getMonthCount() {
 		return mMonthCount;
+	}
+
+
+	public  void setData(ArrayList<MonthBean> monthList){
+		this.monthList.addAll(monthList);
+		notifyDataSetChanged();
 	}
 }
